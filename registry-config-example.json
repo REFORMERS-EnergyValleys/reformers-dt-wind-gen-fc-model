@@ -1,0 +1,10 @@
+{
+    "auths": {
+        "reformers-dev.ait.ac.at:8082": {
+            "auth": "dXNlcjp1c2Vy"
+        },
+        "reformers-dev.ait.ac.at:8083": {
+            "auth": "dXNlcjp1c2Vy"
+        }
+    }
+}

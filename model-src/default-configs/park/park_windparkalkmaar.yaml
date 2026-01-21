@@ -1,0 +1,40 @@
+park_name: WindparkAlkmaar
+site_type: GlobalWindAtlasSite
+roughness: 1.0
+turbines:
+- number: 1
+  name: Alkmaar 1
+  type: alkmaar_2p3mw
+  hub_height: 85.0
+  rotor_diameter: 82.0
+  location:
+    latitude: 52.592999
+    longitude: 4.752301
+    altitude: 10.0
+- number: 2
+  name: Alkmaar 2
+  type: alkmaar_2p3mw
+  hub_height: 85.0
+  rotor_diameter: 82.0
+  location:
+    latitude: 52.595889
+    longitude: 4.753783
+    altitude: 120.0
+- number: 3
+  name: Alkmaar 3
+  type: vestas_v136_3p45mw
+  hub_height: 85.0
+  rotor_diameter: 82.0
+  location:
+    latitude: 52.602287
+    longitude: 4.757099
+    altitude: 10.0
+- number: 4
+  name: Alkmaar 4
+  type: enercon66_1p8mw
+  hub_height: 98.0
+  rotor_diameter: 70.0
+  location:
+    latitude: 52.605192
+    longitude: 4.758576
+    altitude: 24.0

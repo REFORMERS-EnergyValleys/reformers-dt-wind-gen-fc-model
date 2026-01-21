@@ -1,0 +1,9 @@
+simulation_name: 'simulation_alkmaar'
+park_config: 'park_alkmaar.yaml'
+model_type: 'Bastankhah_PorteAgel_2014'
+model_parameters: {k: 0.0324555, TI: 0.0}
+simulation:
+  type: 'redis_message'
+  service: 'openmeteo'
+  features: {'time': 'observation_time', 'ws': 'wind_speed_80m', 'wd': 'wind_direction_80m'} ## translates redis features to eolica features
+  range: null # range is not used in this simulation

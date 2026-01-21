@@ -1,0 +1,39 @@
+[project]
+name = "eolica-runtime"
+version = "0.1.0"
+description = "a package that wraps around eolica for runtime operation"
+authors = [{ name = "marc dünser", email = "marc.duenser@ait.ac.at" }]
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "redis>=5.2.0,<6",
+    "apscheduler>=3.10.4,<4",
+    "PyYAML>=6.0.0,<7",
+    "numpy>=1.26.0,<2",
+    "pandas>=2.1.1,<3",
+    "matplotlib>=3.8.0,<4",
+    "pathlib>=1.0.0,<2",
+    "pydantic>=2.8.0,<3",
+    "plotly>=5.22.0",
+    "munch>=4.0.0,<5",
+    "kaleido==0.1.0.post1 ; platform_system == 'Windows'",
+    "osmnx==2.0.0",
+    "folium==0.18.0",
+    "selenium==4.27.1",
+    "SPARQLWrapper>=1.8.5",
+    "xarray>=2025.11.0",
+    "eolica",
+    "pyrdp-commons",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+eolica = { git = "https://github.com/REFORMERS-EnergyValleys/eolica", rev = "e18b1bd" }
+pyrdp-commons = { git = "https://github.com/AIT-RDP/pyrdp-commons.git", rev = "c27aa07" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

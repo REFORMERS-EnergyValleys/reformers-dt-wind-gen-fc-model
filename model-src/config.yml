@@ -1,0 +1,32 @@
+version: 1
+
+service:
+  # Schedule service execution with a certain frequency (in seconds).
+  frequency_s: 20
+
+eolica:
+  input_stream: weather.forecasts.openmeteo.Alkmaar
+  output_stream: windforecast.eolica.Alkmaar
+  # Used in case knowledge graph-based config generation is DISABLED
+  config_park: ${DEFAULT_CONFIG_PARK}
+  config_simulation: ${DEFAULT_CONFIG_SIMULATION}
+  # Used in case knowledge graph-based config generation is ENABLED
+  park_name: ${PARK_NAME}
+  scenario: ${SCENARIO}
+
+knowledge-graph:
+  # Set to true to enable knowledge graph-based config generation
+  enabled: ${KNOWLEDGE_GRAPH_ENABLED}
+  endpoint: ${KNOWLEDGE_GRAPH_ENDPOINT}
+
+redis:
+  host: redis
+  port: 6379
+  db: 0
+  password: ${REDIS_PASSWORD}
+
+logging:
+  loggers:
+    urllib3.connectionpool:
+      level: INFO
+      handlers: ["console"]

@@ -1,0 +1,54 @@
+---
+reformers-dt-wind-gen-fc:
+
+  version: v1.0
+
+  #------------------------------------------------------------------------------
+  # Specify parameters for the generator config. These parameters typically stay
+  # the same for different versions of the same model. When generating the model,
+  # you can define environment variables of the same name to change the default
+  # values defined here.
+  #------------------------------------------------------------------------------
+  config:
+    # URL to generator registry
+    GENERATOR_REGISTRY: reformers-dev.ait.ac.at:8082
+    # URL to model registry
+    MODEL_REGISTRY: reformers-dev.ait.ac.at:8083
+    # Dockerfile for the model build process (relative to model source directory)
+    MODEL_DOCKERFILE: Dockerfile
+
+  #------------------------------------------------------------------------
+  # Add information about build parameters.
+  # These parameters are  typically different for different versions of the
+  # same model. When generating the model, you can define environment
+  # variables of the same name to change the default values defined here.
+  #------------------------------------------------------------------------
+  parameters:
+    DEFAULT_CONFIG_PARK:
+      info: path to eolica park config
+      default: default-configs/park_alkmaar.yaml
+    DEFAULT_CONFIG_SIMULATION:
+      info: path to eolica simulation config
+      default: default-configs/simulation_alkmaar.yaml
+    PARK_NAME:
+      info: name of the wind park
+      default: WindparkAlkmaar
+    SCENARIO:
+      info: scenario name
+      default: BaselineAlkmaar
+    KNOWLEDGE_GRAPH_ENABLED:
+      info: whether to use knowledge graph for config generation
+      default: false
+    KNOWLEDGE_GRAPH_ENDPOINT:
+      info: endpoint of the knowledge graph database
+      default: http://localhost:7200/repositories/REFORMERS
+    REDIS_PASSWORD:
+      info: password for redis connection
+      default: r3f0rm3r5-w!nd-f0r3ca5t
+
+  #-------------------------------------
+  # Optional info for the build process.
+  #-------------------------------------
+  build:
+    cache:
+      - python:3.12-slim

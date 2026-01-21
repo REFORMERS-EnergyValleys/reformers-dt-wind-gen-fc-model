@@ -1,0 +1,32 @@
+park_name: 'WindparkAlkmaar'
+site_type: 'GlobalWindAtlasSite'
+roughness: 1.0 # roughness from here: https://www.wind-energy-the-facts.org/fundamentals.html
+turbines:
+  - number: 1
+    type: 'alkmaar_2p3MW'
+    name: 'Alkmaar 1 (2.3 MW)'
+    location:
+      latitude: 52.592999
+      longitude: 4.752301
+      altitude: 10.
+  - number: 2
+    type: 'alkmaar_2p3MW'
+    name: 'Alkmaar 2 (2.3 MW)'
+    location:
+      latitude: 52.595889
+      longitude: 4.753783
+      altitude: 120.
+  - number: 3
+    type: 'alkmaar_2p3MW'
+    name: 'Alkmaar 3 (2.3 MW)'
+    location:
+      latitude: 52.602287
+      longitude: 4.757099
+      altitude: 10.
+  - number: 4
+    type: 'alkmaar_2p3MW'
+    name: 'Alkmaar 4 (2.3 MW)'
+    location:
+      latitude: 52.605192
+      longitude: 4.758576
+      altitude: 24.
