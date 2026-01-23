@@ -37,23 +37,25 @@ async def main(config: dict) -> None:
                             db=config['redis']['db'],
                             decode_responses=True)
 
-    # Extract GraphDB config if available
-    graphdb_config = None
+    # Extract knowledge graph config if available
+    knowledge_graph_config = config.get('knowledge-graph')
     park_name = None
     generated_turbine_types_config = None
     generated_park_config = None
 
-    if 'graphdb' in config and config['graphdb'].get('enabled', False):
-        graphdb_config = config['graphdb']
+    Logger.debug(f'|---- EOLICA RUNTIME ----| this is the knowledge_graph_config: {knowledge_graph_config}')
+    Logger.debug(f'|---- EOLICA RUNTIME ----| this is the park_name: {park_name} for which the knowledge graph is queried')
+
+    if knowledge_graph_config and knowledge_graph_config.get('enabled', False):
         park_name = config['eolica'].get('park_name')
-        Logger.debug(f'|---- EOLICA RUNTIME ----| GraphDB enabled: {graphdb_config}')
+        Logger.debug(f'|---- EOLICA RUNTIME ----| Knowledge graph enabled: {knowledge_graph_config}')
         Logger.debug(f'|---- EOLICA RUNTIME ----| Park name: {park_name}')
 
-        # Generate turbine types config file from GraphDB
+        # Generate turbine types config file from knowledge graph
         try:
-            endpoint = graphdb_config.get('endpoint')
+            endpoint = knowledge_graph_config.get('endpoint')
             if not endpoint:
-                Logger.debug(f'|---- EOLICA RUNTIME ----| Warning: GraphDB endpoint not found in config, skipping turbine types config generation')
+                Logger.debug(f'|---- EOLICA RUNTIME ----| Warning: Knowledge graph endpoint not found in config, skipping turbine types config generation')
             elif not park_name:
                 Logger.debug(f'|---- EOLICA RUNTIME ----| Warning: park_name not found in config, skipping turbine types config generation')
             else:
@@ -72,7 +74,7 @@ async def main(config: dict) -> None:
                 filename = f"turbinetypes_{park_name.lower().replace(' ', '_')}.yaml"
                 output_path = turbine_types_dir / filename
 
-                Logger.debug(f'|---- EOLICA RUNTIME ----| Generating turbine types config from GraphDB...')
+                Logger.debug(f'|---- EOLICA RUNTIME ----| Generating turbine types config from knowledge graph ...')
                 Logger.debug(f'|---- EOLICA RUNTIME ----|   Scenario: {scenario}')
                 Logger.debug(f'|---- EOLICA RUNTIME ----|   Park: {park_name}')
                 Logger.debug(f'|---- EOLICA RUNTIME ----|   Output: {output_path}')
@@ -88,7 +90,7 @@ async def main(config: dict) -> None:
                 Logger.debug(f'|---- EOLICA RUNTIME ----| Successfully generated turbine types config at: {output_path}')
                 generated_turbine_types_config = str(output_path)
 
-                # Generate park config file from GraphDB
+                # Generate park config file from knowledge graph
                 park_config_dir = config_dir / 'eolica-configs' / 'park'
                 park_config_dir.mkdir(parents=True, exist_ok=True)
 
@@ -96,7 +98,7 @@ async def main(config: dict) -> None:
                 park_filename = f"park_{park_name.lower().replace(' ', '_')}.yaml"
                 park_output_path = park_config_dir / park_filename
 
-                Logger.debug(f'|---- EOLICA RUNTIME ----| Generating park config from GraphDB...')
+                Logger.debug(f'|---- EOLICA RUNTIME ----| Generating park config from knowledge graph ...')
                 Logger.debug(f'|---- EOLICA RUNTIME ----|   Scenario: {scenario}')
                 Logger.debug(f'|---- EOLICA RUNTIME ----|   Park: {park_name}')
                 Logger.debug(f'|---- EOLICA RUNTIME ----|   Output: {park_output_path}')
@@ -112,12 +114,9 @@ async def main(config: dict) -> None:
                 Logger.debug(f'|---- EOLICA RUNTIME ----| Successfully generated park config at: {park_output_path}')
                 generated_park_config = str(park_output_path)
         except Exception as e:
-            Logger.error(f'|---- EOLICA RUNTIME ----| Error generating configs from GraphDB: {e}')
+            Logger.error(f'|---- EOLICA RUNTIME ----| Error generating configs from knowledge graph: {e}')
             import traceback
             traceback.print_exc()
-
-    Logger.debug(f'|---- EOLICA RUNTIME ----| this is the graphdb_config: {graphdb_config}')
-    Logger.debug(f'|---- EOLICA RUNTIME ----| this is the park_name: {park_name} for which the graphdb is queried')
 
     # Use generated configs if available, otherwise use config file paths
     final_park_config = generated_park_config if generated_park_config else config_park
