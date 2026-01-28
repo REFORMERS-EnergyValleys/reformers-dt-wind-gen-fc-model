@@ -1,2 +1,14 @@
-**_pycache__
-**.env
+# local build artifacts
+cache
+build
+
+# metagenerator articfacts
+**/config.json
+**/generator.sh
+
+# Python bytecode cache
+**/__pycache__/
+
+# Helper scripts
+*.cmd
+*.sh
