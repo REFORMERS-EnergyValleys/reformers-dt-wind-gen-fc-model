@@ -85,7 +85,7 @@ The simulation results published to Redis include:
 ## Automated Model Generation
 
 In addition to the model source code itself, a [DevOps configuration](./.gitlab-ci.yml) (for GitLab CI/CD) has been added.
-This implements the automated creation of a new model generator (using the generator manifest file and metagenerator) every time a new version of the model source code is released (i.e., the code is tagged with a new version).
+This implements the automated creation of a new model generator (using the [generator manifest file](./GENERATOR-MANIFEST.yml) and [metagenerator](https://github.com/REFORMERS-EnergyValleys/reformers-dt-metagenerator)) every time a new version of the model source code is released (i.e., the code is tagged with a new version).
 Together with the [knowledge graph database](https://github.com/REFORMERS-EnergyValleys/example-reformers-knowledge-graph) and the [Model API & Container Registry](https://github.com/REFORMERS-EnergyValleys/reformers-dt-model-api) prototype, this demonstrates the automated model generation workflow of the REFORMERS Digital Twin technical framework.
 
 ## Funding acknowledgement
