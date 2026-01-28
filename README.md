@@ -3,7 +3,7 @@
 This repository provides a model for forecasting the power generation of wind turbines for the REFORMERS Digital Twin.
 It integrates the [EOLICA] package, relying on wind forecasts from a public weather service to simulate the behaviour of arbitrary wind parks and generate forecasts based on the simulation results.
 
-[EOLICA]: (https://github.com/REFORMERS-EnergyValleys/eolica)
+[EOLICA]: https://github.com/REFORMERS-EnergyValleys/eolica
 
 ## Overview
 
