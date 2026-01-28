@@ -1,0 +1,75 @@
+# This file defines the pipeline’s jobs, stages, and rules for automatically building
+# and the model generator for the wind generation forecast model with GitLab CI/CD.
+#
+# The following CI/CD variables are expected (cp. with file .env.example):
+# - MODEL_API_BASE_URL: URL for Model API
+# - MODEL_API_TOKEN: token for accessing the Model API
+# - MODEL_IMAGE_REGISTRY: name of container registry for model images
+# - DOCKER_AUTH_CONFIG (variable of type File): credential file for docker registries (base64-encoded user name and passwords)
+
+stages:
+  - setup
+  - create-model-generator
+
+# ============================================================================
+# Setup for docker (provide credentials for registries)
+# ============================================================================
+docker-setup:
+  stage: setup
+  before_script:
+    # Install requirements
+    - apt-get -y --no-upgrade --no-install-recommends --no-install-suggests install jq bash coreutils
+  script:
+    - |
+      ### Setup for docker (provide credentials for registries)
+
+      # Check if input file is well formatted
+      if ! jq -e 'has("auths") and (.auths | type == "object") and all(.[] | has("auth"))' "${DOCKER_AUTH_CONFIG}" >/dev/null; then
+        echo "[ERROR] file ${DOCKER_AUTH_CONFIG} is not well formatted"
+        exit 1
+      fi
+
+      # Path to Docker config
+      DOCKER_CONFIG_JSON=${HOME}/.docker/config.json
+
+      # Flag to check if the config needs an update
+      UPDATE_CONFIG=false
+
+      # Check if all registries provided via file DOCKER_AUTH_CONFIG are already known
+      NEW_REGISTRIES=$(jq -r '.auths | keys[]' "${DOCKER_AUTH_CONFIG}" | sed -E 's|^https?://||')
+      for REGISTRY in ${NEW_REGISTRIES}; do
+          if ! jq -e --arg reg "${REGISTRY}" '.auths | has($reg)' "${DOCKER_CONFIG_JSON}" >/dev/null; then
+              echo "[INFO] ${REGISTRY} will be added"
+              UPDATE_CONFIG=true
+          else
+              echo "[INFO] ${REGISTRY} already known"
+          fi
+      done
+
+      # Merge configs if needed
+      if [ "${UPDATE_CONFIG}" = true ]; then
+          DOCKER_CONFIG_JSON_UPDATE=$(jq -s '.[0] * .[1]' "${DOCKER_CONFIG_JSON}" "${DOCKER_AUTH_CONFIG}")
+          echo "${DOCKER_CONFIG_JSON_UPDATE}" > "${DOCKER_CONFIG_JSON}"
+          echo "[INFO] Merged Docker configs:"
+          cat "${DOCKER_CONFIG_JSON}"
+      fi
+  tags:
+    - reformers-dev
+  rules:
+    - when: on_success
+
+# ============================================================================
+# Use the Metagenerator to create the model genarator
+# ============================================================================
+
+model-api-helper:
+  image: ghcr.io/reformers-energyvalleys/metagenerator:release
+  before_script:
+    - cd "${CI_PROJECT_DIR}"
+    - ln -s "${DOCKER_AUTH_CONFIG}" "${CI_PROJECT_DIR}/config.json"
+  script: /build-generator-image.shC GENERATOR-MANIFEST.yml model-src
+  variables:
+    EXTRA_FLAGS: --skip-tls-verify
+  stage: create-model-generator
+  tags:
+    - docker
