@@ -39,16 +39,15 @@ async def main(config: dict) -> None:
 
     # Extract knowledge graph config if available
     knowledge_graph_config = config.get('knowledge-graph')
-    park_name = None
     generated_turbine_types_config = None
     generated_park_config = None
 
     Logger.debug(f'|---- EOLICA RUNTIME ----| this is the knowledge_graph_config: {knowledge_graph_config}')
-    Logger.debug(f'|---- EOLICA RUNTIME ----| this is the park_name: {park_name} for which the knowledge graph is queried')
 
     if knowledge_graph_config and knowledge_graph_config.get('enabled', False):
+        Logger.debug('|---- EOLICA RUNTIME ----| Using the knowledge graph for runtime configuration')
+
         park_name = config['eolica'].get('park_name')
-        Logger.debug(f'|---- EOLICA RUNTIME ----| Knowledge graph enabled: {knowledge_graph_config}')
         Logger.debug(f'|---- EOLICA RUNTIME ----| Park name: {park_name}')
 
         # Generate turbine types config file from knowledge graph
