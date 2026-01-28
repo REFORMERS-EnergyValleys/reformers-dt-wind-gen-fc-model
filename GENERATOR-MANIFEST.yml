@@ -1,7 +1,7 @@
 ---
 reformers-dt-wind-gen-fc:
 
-  version: v1.0
+  version: v1
 
   #------------------------------------------------------------------------------
   # Specify parameters for the generator config. These parameters typically stay
@@ -19,11 +19,11 @@ reformers-dt-wind-gen-fc:
 
   #------------------------------------------------------------------------
   # Add information about build parameters.
-  # These parameters are  typically different for different versions of the
+  # These parameters are typically different for different versions of the
   # same model. When generating the model, you can define environment
   # variables of the same name to change the default values defined here.
   #------------------------------------------------------------------------
-  parameters:
+  generation_parameters:
     DEFAULT_CONFIG_PARK:
       info: path to eolica park config
       default: default-configs/park_alkmaar.yaml
@@ -36,15 +36,31 @@ reformers-dt-wind-gen-fc:
     SCENARIO:
       info: scenario name
       default: BaselineAlkmaar
-    KNOWLEDGE_GRAPH_ENABLED:
-      info: whether to use knowledge graph for config generation
-      default: false
-    KNOWLEDGE_GRAPH_ENDPOINT:
-      info: endpoint of the knowledge graph database
-      default: http://localhost:7200/repositories/REFORMERS
     REDIS_PASSWORD:
       info: password for redis connection
       default: r3f0rm3r5-w!nd-f0r3ca5t
+
+  #------------------------------------------------------------------------
+  # Information about mandatory runtime parameters.
+  # These parameters are typically different for different versions of the
+  # same model. When running the model, you must define environment
+  # variables of the same name to change the default values defined here.
+  #------------------------------------------------------------------------
+  parameters:
+    KNOWLEDGE_GRAPH_ENABLED:
+      info: whether to use knowledge graph for config generation
+      example: "false"
+
+  #------------------------------------------------------------------------
+  # Information about optional runtime parameters.
+  # These parameters are typically different for different versions of the
+  # same model. When running the model, you may define environment
+  # variables of the same name to change the default values defined here.
+  #------------------------------------------------------------------------
+  optional:
+    KNOWLEDGE_GRAPH_ENDPOINT:
+      info: endpoint of the knowledge graph database
+      default: http://localhost:7200/repositories/REFORMERS
 
   #-------------------------------------
   # Optional info for the build process.
