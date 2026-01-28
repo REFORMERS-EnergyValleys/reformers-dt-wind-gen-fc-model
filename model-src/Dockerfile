@@ -22,7 +22,7 @@ WORKDIR /app
 ARG VIRTUAL_ENV=/app/.venv
 
 # Collect resources from previous build stage.
-COPY --from=dependency-builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+COPY --from=dependency-builder /app/.venv ${VIRTUAL_ENV}
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Copy runtime source code
