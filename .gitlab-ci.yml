@@ -62,7 +62,7 @@ docker-setup:
 # Use the Metagenerator to create the model genarator
 # ============================================================================
 
-model-api-helper:
+create-model-generator:
   image: ghcr.io/reformers-energyvalleys/metagenerator:release
   before_script:
     - cd "${CI_PROJECT_DIR}"
